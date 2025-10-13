@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Transformateur — Chat & Chien (Tokyo Revengers)</title>
+  <meta name="description" content="Transforme automatiquement ta vidéo : chat & chien personnalisés, durée préservée, sons libres de droits, SEO prêt pour YouTube.">
+  <style>
+    :root{
+      --bg:#07070b; --card:#0f1114; --neon:#ff3b6f; --accent:#00d2ff; --muted:#9aa7b2;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Titillium Web',sans-serif}
+    body{margin:0;background:linear-gradient(180deg,#050507 0%, #0b0b0f 100%); color:#e6eef8}
+    .wrap{max-width:1000px;margin:26px auto;padding:18px}
+    header{display:flex;align-items:center;gap:14px}
+    .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--neon),var(--accent)); display:flex;align-items:center;justify-content:center;font-weight:700;color:#05101a; font-size:20px}
+    h1{margin:0;font-size:22px;color:var(--neon)}
+    p.lead{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-top:18px}
+    .card{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+    input[type=file]{width:100%}
+    input[type=text], select, button{width:100%; padding:10px;border-radius:10px;border:0;background:var(--glass);color:#fff}
+    button{cursor:pointer;margin-top:10px}
+    .muted{color:var(--muted);font-size:13px}
+    video{max-width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#000}
+    .detected-list{margin-top:8px;color:#dfeeff}
+    .seo-out{background:#081018;padding:10px;border-radius:8px;margin-top:8px;color:#dbefff}
+    .progress{color:#9fd3ff;margin-top:6px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:16px;text-align:center;color:var(--muted);font-size:13px}
+    .tokyo-badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,59,111,0.08);color:var(--neon);font-weight:600}
+    .row{margin-top:10px}
+    .flex{display:flex;gap:8px}
+    .flex > *{flex:1}
+    .danger{color:#ff7b7b}
+    a.cta{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--neon),var(--accent));color:#05101a;text-decoration:none;font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">TR</div>
+      <div>
+        <h1>Transformateur Vidéo — Chat & Chien</h1>
+        <p class="lead">Style : identique à l'original • Durée conservée • Sons libres de droits (monétisable)</p>
+      </div>
+      <div style="margin-left:auto"><span class="tokyo-badge">Tokyo Revengers UI</span></div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h3>1 • Téléverse ta vidéo (MP4)</h3>
+        <label>Fichier vidéo</label>
+        <input id="videoFile" type="file" accept="video/mp4,video/*">
+        <div class="row small muted">Conseil : <strong>préférer</strong> vidéos courtes (< 60s) pour rester dans les quotas gratuits.</div>
+
+        <div id="previewWrap" style="display:none;margin-top:12px">
+          <label>Prévisualisation</label>
+          <video id="preview" controls></video>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.02)">
+
+        <h3>2 • Paramètres principaux</h3>
+        <label>Couleur du chat (ex : orange, noir, blanc)</label>
+        <input id="catColor" type="text" placeholder="ex: orange">
+        <label style="margin-top:8px">Couleur du chien (ex : marron, noir, blanc)</label>
+        <input id="dogColor" type="text" placeholder="ex: marron">
+
+        <div class="row" style="margin-top:12px">
+          <button id="analyzeBtn">Analyser la vidéo</button>
+        </div>
+
+        <div id="detected" class="detected-list" style="display:none"></div>
+
+        <div id="customActions" style="display:none;margin-top:10px">
+          <div class="small muted">Tu peux modifier les couleurs ci-dessus, puis lancer la transformation.</div>
+          <div style="margin-top:8px">
+            <button id="transformBtn">Lancer la transformation</button>
+          </div>
+        </div>
+
+        <div id="progress" class="progress"></div>
+      </div>
+
+      <div class="card">
+        <h3>Résultat & SEO</h3>
+        <div id="resultArea" style="display:none">
+          <label>Vidéo finale (téléchargeable)</label>
+          <video id="resultVideo" controls></video>
+          <div style="margin-top:8px"><a id="downloadLink" class="cta" href="#" download> Télécharger la vidéo</a></div>
+
+          <div class="seo-out" id="seoOut" style="display:none">
+            <div><strong id="seoTitle"></strong></div>
+            <div id="seoDesc" style="margin-top:6px"></div>
+            <div style="margin-top:8px"><strong>Hashtags :</strong> <span id="seoTags"></span></div>
+            <div style="margin-top:8px"><strong>Chapitres :</strong> <div id="seoChaps" class="small muted"></div></div>
+          </div>
+        </div>
+
+        <div id="noteBox" class="small muted" style="margin-top:10px">
+          Remarque : la solution utilise des IA gratuites (Pollinations, Stable Video) et Gemini pour le SEO. Pour <strong>3 ans</strong> de pérennité, prévoir des alternatives open-source (Hugging Face + SD local) en cas de changements de quotas.
+        </div>
+      </div>
+    </div>
+
+    <footer>© Transform • Made for long-term monetizable videos • <span class="small muted">Assure-toi d'avoir la clé Gemini & Stability configurée côté n8n</span></footer>
+  </div>
+
+  <script>
+    // -------------------------
+    // CONFIG : remplace cette URL par ton webhook n8n importé
+    // Webhook doit accepter deux actions: ?action=analyze (renvoie detections JSON) et POST pour lancer la transformation.
+    const N8N_WEBHOOK = 'https://TON-N8N-INSTANCE/webhook/video-transform'; // <-- remplace ici
+    // -------------------------
+
+    const videoFileEl = document.getElementById('videoFile');
+    const preview = document.getElementById('preview');
+    const previewWrap = document.getElementById('previewWrap');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const detectedEl = document.getElementById('detected');
+    const customActions = document.getElementById('customActions');
+    const transformBtn = document.getElementById('transformBtn');
+    const progress = document.getElementById('progress');
+    const resultArea = document.getElementById('resultArea');
+    const resultVideo = document.getElementById('resultVideo');
+    const downloadLink = document.getElementById('downloadLink');
+    const seoOut = document.getElementById('seoOut');
+    const seoTitle = document.getElementById('seoTitle');
+    const seoDesc = document.getElementById('seoDesc');
+    const seoTags = document.getElementById('seoTags');
+    const seoChaps = document.getElementById('seoChaps');
+
+    let currentFile = null;
+    let lastDetection = null;
+
+    videoFileEl.addEventListener('change', (e)=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      currentFile = f;
+      preview.src = URL.createObjectURL(f);
+      previewWrap.style.display = 'block';
+      detectedEl.style.display = 'none';
+      customActions.style.display = 'none';
+      resultArea.style.display = 'none';
+      seoOut.style.display = 'none';
+      progress.textContent = '';
+    });
+
+    analyzeBtn.addEventListener('click', async ()=>{
+      if(!currentFile) return alert('Téléverse d\'abord une vidéo.');
+      progress.textContent = 'Envoi de la vidéo pour analyse...';
+      try {
+        const fd = new FormData();
+        fd.append('video', currentFile, currentFile.name);
+        fd.append('action', 'analyze'); // indique au webhook qu'on veut analyser
+        const r = await fetch(N8N_WEBHOOK + '?action=analyze', { method: 'POST', body: fd });
+        if(!r.ok) throw new Error('Erreur réseau');
+        const json = await r.json();
+        lastDetection = json;
+        showDetections(json);
+        progress.textContent = 'Analyse terminée';
+      } catch (err){
+        console.error(err);
+        progress.textContent = 'Erreur lors de l\'analyse';
+      }
+    });
+
+    function showDetections(json){
+      const det = json.detected || [];
+      // prioritise chat & chien
+      const hasCat = det.some(d => /cat|chat/i.test(d.label));
+      const hasDog = det.some(d => /dog|chien/i.test(d.label));
+      let html = '<strong>Animaux détectés :</strong><br>';
+      if(det.length === 0) html += '<em>Aucun animal détecté automatiquement — le système forcera chat & chien.</em>';
+      else html += det.map(d => `• ${d.label} (confidence ${(d.confidence*100).toFixed(0)}%)`).join('<br>');
+      html += '<div class="small muted" style="margin-top:8px">Le pipeline gardera Chat & Chien comme personnages principaux (s’ils existent) ou prendra les deux animaux les plus présents.</div>';
+      detectedEl.innerHTML = html;
+      detectedEl.style.display = 'block';
+      customActions.style.display = 'block';
+    }
+
+    transformBtn.addEventListener('click', async ()=>{
+      if(!currentFile) return alert('Téléverse une vidéo d\'abord');
+      const catColor = document.getElementById('catColor').value.trim() || 'orange';
+      const dogColor = document.getElementById('dogColor').value.trim() || 'brown';
+      progress.textContent = 'Upload + préparation du job...';
+      try {
+        const fd = new FormData();
+        fd.append('video', currentFile, currentFile.name);
+        fd.append('action', 'transform'); // indique qu'on lance une transformation complète
+        fd.append('catColor', catColor);
+        fd.append('dogColor', dogColor);
+        // envoi
+        const r = await fetch(N8N_WEBHOOK, { method: 'POST', body: fd });
+        const j = await r.json();
+        if(j.status === 'processing' && j.job_id){
+          progress.textContent = 'Job lancé (id: ' + j.job_id + ') — attente...';
+          pollJob(j.job_id);
+        } else if(j.status === 'done' && j.download_url){
+          showResult(j);
+        } else {
+          progress.textContent = 'Réponse inattendue du serveur';
+          console.log(j);
+        }
+      } catch (err){
+        console.error(err);
+        progress.textContent = 'Erreur lors du lancement';
+      }
+    });
+
+    async function pollJob(jobId){
+      const max = 90; // ~6 minutes
+      for(let i=0;i<max;i++){
+        await new Promise(r=>setTimeout(r,4000));
+        try {
+          const r = await fetch(N8N_WEBHOOK + '?action=status&job_id=' + encodeURIComponent(jobId));
+          if(!r.ok) continue;
+          const j = await r.json();
+          if(j.status === 'done' && j.download_url){
+            showResult(j);
+            return;
+          } else {
+            progress.textContent = 'Progress: ' + (j.progress || 'processing...');
+          }
+        } catch(e){
+          // ignore
+        }
+      }
+      progress.textContent = 'Temps dépassé — réessaie plus tard';
+    }
+
+    function showResult(j){
+      progress.textContent = 'Terminé ✅';
+      resultArea.style.display = 'block';
+      resultVideo.src = j.download_url;
+      downloadLink.href = j.download_url;
+      downloadLink.setAttribute('download','transformed_'+(currentFile ? currentFile.name : 'video.mp4'));
+      if(j.seo){
+        seoOut.style.display = 'block';
+        seoTitle.textContent = j.seo.title || '';
+        seoDesc.textContent = j.seo.description || '';
+        seoTags.textContent = (j.seo.hashtags || []).join(' ');
+        seoChaps.innerText = (j.seo.chapters || []).map(c => `${c.time} ${c.label}`).join('  |  ');
+      }
+    }
+  </script>
+</body>
+</html>
