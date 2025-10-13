@@ -1,251 +1,309 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Transformateur — Chat & Chien (Tokyo Revengers)</title>
-  <meta name="description" content="Transforme automatiquement ta vidéo : chat & chien personnalisés, durée préservée, sons libres de droits, SEO prêt pour YouTube.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Transformateur — Analyse automatique & remplacements</title>
+  <meta name="description" content="Upload → Analyse animaux → Remplace par (couleur) → Télécharge. Style Tokyo Revengers." />
   <style>
     :root{
-      --bg:#07070b; --card:#0f1114; --neon:#ff3b6f; --accent:#00d2ff; --muted:#9aa7b2;
+      --bg:#06060a; --card:#0e0f12; --neon:#ff3b6f; --accent:#00d2ff; --muted:#98a6b3;
       --glass: rgba(255,255,255,0.03);
+      --radius:12px;
     }
-    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Titillium Web',sans-serif}
-    body{margin:0;background:linear-gradient(180deg,#050507 0%, #0b0b0f 100%); color:#e6eef8}
-    .wrap{max-width:1000px;margin:26px auto;padding:18px}
-    header{display:flex;align-items:center;gap:14px}
-    .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--neon),var(--accent)); display:flex;align-items:center;justify-content:center;font-weight:700;color:#05101a; font-size:20px}
-    h1{margin:0;font-size:22px;color:var(--neon)}
+    *{box-sizing:border-box;font-family:Inter, 'Titillium Web', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+    body{margin:0;background:linear-gradient(180deg,#040405 0%, #0b0b0f 100%); color:#e6eef8; -webkit-font-smoothing:antialiased}
+    .site{max-width:1000px;margin:28px auto;padding:18px}
+    header{display:flex;align-items:center;gap:12px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(45deg,var(--neon),var(--accent));display:flex;align-items:center;justify-content:center;color:#041015;font-weight:800}
+    h1{margin:0;font-size:22px;color:var(--neon);letter-spacing:0.6px}
     p.lead{margin:0;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-top:18px}
-    .card{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
-    input[type=file]{width:100%}
-    input[type=text], select, button{width:100%; padding:10px;border-radius:10px;border:0;background:var(--glass);color:#fff}
-    button{cursor:pointer;margin-top:10px}
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03)}
     .muted{color:var(--muted);font-size:13px}
-    video{max-width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#000}
-    .detected-list{margin-top:8px;color:#dfeeff}
-    .seo-out{background:#081018;padding:10px;border-radius:8px;margin-top:8px;color:#dbefff}
-    .progress{color:#9fd3ff;margin-top:6px}
-    .small{font-size:13px;color:var(--muted)}
-    footer{margin-top:16px;text-align:center;color:var(--muted);font-size:13px}
-    .tokyo-badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,59,111,0.08);color:var(--neon);font-weight:600}
-    .row{margin-top:10px}
-    .flex{display:flex;gap:8px}
-    .flex > *{flex:1}
-    .danger{color:#ff7b7b}
-    a.cta{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--neon),var(--accent));color:#05101a;text-decoration:none;font-weight:700}
+    input[type=file]{display:block;width:100%;padding:10px;border-radius:10px;border:0;background:var(--glass);color:#fff}
+    .controls{display:flex;gap:8px;margin-top:10px}
+    button{padding:10px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--neon),var(--accent));color:#041015;font-weight:700;cursor:pointer}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    video{width:100%;border-radius:8px;background:#000;margin-top:10px}
+    .detected-list{margin-top:12px;display:grid;gap:8px}
+    .det-item{display:grid;grid-template-columns:1fr 200px;gap:8px;align-items:center;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02))}
+    .small{font-size:13px}
+    label.small{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input.text,input.color{width:100%;padding:8px;border-radius:8px;border:0;background:rgba(255,255,255,0.02);color:#fff}
+    .progress{margin-top:10px;color:#9fd3ff}
+    .seo-box{background:#081018;padding:10px;border-radius:8px;margin-top:10px;color:#dbefff}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+    .hint{color:#a7b7c6;font-size:13px;margin-top:6px}
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="site">
     <header>
       <div class="logo">TR</div>
       <div>
-        <h1>Transformateur Vidéo — Chat & Chien</h1>
-        <p class="lead">Style : identique à l'original • Durée conservée • Sons libres de droits (monétisable)</p>
+        <h1>Transformateur Vidéo — Analyse & remplacements</h1>
+        <p class="lead">Upload → analyse automatique → choisis remplacements & couleurs → transforme (durée préservée)</p>
       </div>
-      <div style="margin-left:auto"><span class="tokyo-badge">Tokyo Revengers UI</span></div>
     </header>
 
     <div class="grid">
+      <!-- LEFT: MAIN WORKFLOW -->
       <div class="card">
         <h3>1 • Téléverse ta vidéo (MP4)</h3>
-        <label>Fichier vidéo</label>
-        <input id="videoFile" type="file" accept="video/mp4,video/*">
-        <div class="row small muted">Conseil : <strong>préférer</strong> vidéos courtes (< 60s) pour rester dans les quotas gratuits.</div>
+        <input id="videoUpload" type="file" accept="video/mp4,video/*" />
+        <div class="hint">La vidéo est automatiquement analysée pour détecter les animaux dès l'upload.</div>
 
-        <div id="previewWrap" style="display:none;margin-top:12px">
-          <label>Prévisualisation</label>
+        <div id="previewWrap" style="display:none">
+          <label class="small">Prévisualisation</label>
           <video id="preview" controls></video>
         </div>
 
-        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.02)">
+        <div id="analyzeStatus" class="progress" style="display:none"></div>
 
-        <h3>2 • Paramètres principaux</h3>
-        <label>Couleur du chat (ex : orange, noir, blanc)</label>
-        <input id="catColor" type="text" placeholder="ex: orange">
-        <label style="margin-top:8px">Couleur du chien (ex : marron, noir, blanc)</label>
-        <input id="dogColor" type="text" placeholder="ex: marron">
+        <div id="detectedWrap" style="display:none;margin-top:12px">
+          <h3>2 • Animaux détectés</h3>
+          <div class="muted small">Pour chaque animal, indique par quoi tu veux le remplacer et la couleur. Laisse vide pour garder l'animal tel quel.</div>
+          <div class="detected-list" id="detectedList"></div>
 
-        <div class="row" style="margin-top:12px">
-          <button id="analyzeBtn">Analyser la vidéo</button>
-        </div>
-
-        <div id="detected" class="detected-list" style="display:none"></div>
-
-        <div id="customActions" style="display:none;margin-top:10px">
-          <div class="small muted">Tu peux modifier les couleurs ci-dessus, puis lancer la transformation.</div>
-          <div style="margin-top:8px">
-            <button id="transformBtn">Lancer la transformation</button>
+          <div style="margin-top:12px" class="controls">
+            <button id="transformBtn">🚀 Transformer</button>
+            <button id="resetBtn" class="secondary">↺ Réinitialiser</button>
           </div>
-        </div>
 
-        <div id="progress" class="progress"></div>
+          <div id="transformStatus" class="progress" style="margin-top:8px"></div>
+        </div>
       </div>
 
+      <!-- RIGHT: RESULT + SEO -->
       <div class="card">
         <h3>Résultat & SEO</h3>
-        <div id="resultArea" style="display:none">
-          <label>Vidéo finale (téléchargeable)</label>
+        <div id="resultCard" style="display:none">
+          <label class="small">Vidéo finale</label>
           <video id="resultVideo" controls></video>
-          <div style="margin-top:8px"><a id="downloadLink" class="cta" href="#" download> Télécharger la vidéo</a></div>
+          <div style="margin-top:8px"><a id="downloadLink" href="#" download class="small" style="color:var(--accent);text-decoration:none">Télécharger la vidéo</a></div>
 
-          <div class="seo-out" id="seoOut" style="display:none">
-            <div><strong id="seoTitle"></strong></div>
-            <div id="seoDesc" style="margin-top:6px"></div>
-            <div style="margin-top:8px"><strong>Hashtags :</strong> <span id="seoTags"></span></div>
-            <div style="margin-top:8px"><strong>Chapitres :</strong> <div id="seoChaps" class="small muted"></div></div>
+          <div id="seoBox" class="seo-box" style="display:none">
+            <div id="seoTitle" style="font-weight:700;color:var(--neon)"></div>
+            <div id="seoDesc" class="small" style="margin-top:6px"></div>
+            <div style="margin-top:8px"><strong>Hashtags :</strong> <span id="seoTags" class="small"></span></div>
+            <div style="margin-top:8px"><strong>Chapitres :</strong><div id="seoChaps" class="small muted"></div></div>
           </div>
         </div>
 
-        <div id="noteBox" class="small muted" style="margin-top:10px">
-          Remarque : la solution utilise des IA gratuites (Pollinations, Stable Video) et Gemini pour le SEO. Pour <strong>3 ans</strong> de pérennité, prévoir des alternatives open-source (Hugging Face + SD local) en cas de changements de quotas.
+        <div id="waitingNote" class="muted small" style="margin-top:12px">
+          Note : pour que ceci fonctionne il faut un endpoint n8n configuré. Remplace la variable N8N_WEBHOOK dans le code par ton webhook n8n.
         </div>
       </div>
     </div>
 
-    <footer>© Transform • Made for long-term monetizable videos • <span class="small muted">Assure-toi d'avoir la clé Gemini & Stability configurée côté n8n</span></footer>
+    <footer>© Transform • Tokyo Revengers UI — Assure-toi que ton n8n supporte les actions "analyze", "transform" et "status"</footer>
   </div>
 
   <script>
-    // -------------------------
-    // CONFIG : remplace cette URL par ton webhook n8n importé
-    // Webhook doit accepter deux actions: ?action=analyze (renvoie detections JSON) et POST pour lancer la transformation.
-    const N8N_WEBHOOK = 'https://TON-N8N-INSTANCE/webhook/video-transform'; // <-- remplace ici
-    // -------------------------
+    // ---------------------------
+    // CONFIG : remplace par ton webhook n8n
+    const N8N_WEBHOOK = "https://TON-N8N-INSTANCE/webhook/video-transform"; // <-- remplace ici
+    // ---------------------------
 
-    const videoFileEl = document.getElementById('videoFile');
-    const preview = document.getElementById('preview');
+    const videoUpload = document.getElementById('videoUpload');
     const previewWrap = document.getElementById('previewWrap');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const detectedEl = document.getElementById('detected');
-    const customActions = document.getElementById('customActions');
+    const preview = document.getElementById('preview');
+    const analyzeStatus = document.getElementById('analyzeStatus');
+    const detectedWrap = document.getElementById('detectedWrap');
+    const detectedList = document.getElementById('detectedList');
     const transformBtn = document.getElementById('transformBtn');
-    const progress = document.getElementById('progress');
-    const resultArea = document.getElementById('resultArea');
+    const resetBtn = document.getElementById('resetBtn');
+    const transformStatus = document.getElementById('transformStatus');
+    const resultCard = document.getElementById('resultCard');
     const resultVideo = document.getElementById('resultVideo');
     const downloadLink = document.getElementById('downloadLink');
-    const seoOut = document.getElementById('seoOut');
+    const seoBox = document.getElementById('seoBox');
     const seoTitle = document.getElementById('seoTitle');
     const seoDesc = document.getElementById('seoDesc');
     const seoTags = document.getElementById('seoTags');
     const seoChaps = document.getElementById('seoChaps');
 
-    let currentFile = null;
-    let lastDetection = null;
+    let uploadedFile = null;
+    let lastAnalysis = null;
+    let pollingInterval = null;
 
-    videoFileEl.addEventListener('change', (e)=>{
+    // Util: create element for each detected animal
+    function createDetectedItem(index, label, confidence){
+      const wrapper = document.createElement('div');
+      wrapper.className = 'det-item';
+      // left: info
+      const info = document.createElement('div');
+      info.innerHTML = `<div style="font-weight:700">${label}</div><div class="small muted">Confiance: ${(confidence*100).toFixed(0)}%</div>`;
+      // right: inputs replacement + color
+      const controls = document.createElement('div');
+      controls.style.display = 'grid';
+      controls.style.gridTemplateRows = 'auto auto';
+      controls.style.gap = '6px';
+      const repl = document.createElement('input');
+      repl.className = 'text';
+      repl.placeholder = 'Remplacer par (ex: chien, renard...)';
+      repl.dataset.label = label;
+      repl.dataset.index = index;
+      const color = document.createElement('input');
+      color.className = 'color';
+      color.placeholder = 'Couleur (ex: orange, marron)';
+      color.dataset.label = label;
+      color.dataset.index = index;
+      controls.appendChild(repl);
+      controls.appendChild(color);
+      wrapper.appendChild(info);
+      wrapper.appendChild(controls);
+      return wrapper;
+    }
+
+    // When user selects a file: preview + auto analyze
+    videoUpload.addEventListener('change', async (e)=>{
       const f = e.target.files[0];
       if(!f) return;
-      currentFile = f;
+      uploadedFile = f;
       preview.src = URL.createObjectURL(f);
       previewWrap.style.display = 'block';
-      detectedEl.style.display = 'none';
-      customActions.style.display = 'none';
-      resultArea.style.display = 'none';
-      seoOut.style.display = 'none';
-      progress.textContent = '';
-    });
-
-    analyzeBtn.addEventListener('click', async ()=>{
-      if(!currentFile) return alert('Téléverse d\'abord une vidéo.');
-      progress.textContent = 'Envoi de la vidéo pour analyse...';
+      analyzeStatus.style.display = 'block';
+      analyzeStatus.textContent = '🔍 Envoi pour analyse...';
+      detectedWrap.style.display = 'none';
+      transformStatus.textContent = '';
+      resultCard.style.display = 'none';
+      seoBox.style.display = 'none';
+      // Call n8n analyze action
       try {
         const fd = new FormData();
-        fd.append('video', currentFile, currentFile.name);
-        fd.append('action', 'analyze'); // indique au webhook qu'on veut analyser
-        const r = await fetch(N8N_WEBHOOK + '?action=analyze', { method: 'POST', body: fd });
-        if(!r.ok) throw new Error('Erreur réseau');
-        const json = await r.json();
-        lastDetection = json;
-        showDetections(json);
-        progress.textContent = 'Analyse terminée';
-      } catch (err){
+        fd.append('video', f, f.name);
+        fd.append('action', 'analyze'); // indicate analyze intent
+        const resp = await fetch(http://localhost:5678/webhook/video-transform + '?action=analyze', { method: 'POST', body: fd });
+        if(!resp.ok) throw new Error('Analyse failed');
+        const json = await resp.json();
+        lastAnalysis = json;
+        // expect json.detected = [{label, confidence}, ...] OR fallback
+        const detected = Array.isArray(json.detected) ? json.detected : (json.detections || []);
+        analyzeStatus.textContent = '✅ Analyse terminée — animaux détectés: ' + (detected.length || 0);
+        // build list
+        detectedList.innerHTML = '';
+        if(detected.length === 0){
+          // fallback: propose chat & dog default entries
+          const el1 = createDetectedItem(0, 'chat', 0.0);
+          const el2 = createDetectedItem(1, 'chien', 0.0);
+          detectedList.appendChild(el1);
+          detectedList.appendChild(el2);
+        } else {
+          detected.forEach((d, i)=>{
+            // d can be string or object
+            let label = (typeof d === 'string') ? d : (d.label || 'animal');
+            let conf = (typeof d === 'string') ? 0 : (d.confidence || 0);
+            detectedList.appendChild(createDetectedItem(i, label, conf));
+          });
+        }
+        detectedWrap.style.display = 'block';
+      } catch(err){
         console.error(err);
-        progress.textContent = 'Erreur lors de l\'analyse';
+        analyzeStatus.textContent = '⚠️ Erreur lors de l\'analyse. Vérifie ton webhook n8n et réessaie.';
       }
     });
 
-    function showDetections(json){
-      const det = json.detected || [];
-      // prioritise chat & chien
-      const hasCat = det.some(d => /cat|chat/i.test(d.label));
-      const hasDog = det.some(d => /dog|chien/i.test(d.label));
-      let html = '<strong>Animaux détectés :</strong><br>';
-      if(det.length === 0) html += '<em>Aucun animal détecté automatiquement — le système forcera chat & chien.</em>';
-      else html += det.map(d => `• ${d.label} (confidence ${(d.confidence*100).toFixed(0)}%)`).join('<br>');
-      html += '<div class="small muted" style="margin-top:8px">Le pipeline gardera Chat & Chien comme personnages principaux (s’ils existent) ou prendra les deux animaux les plus présents.</div>';
-      detectedEl.innerHTML = html;
-      detectedEl.style.display = 'block';
-      customActions.style.display = 'block';
-    }
+    // Reset
+    resetBtn.addEventListener('click', ()=>{
+      uploadedFile = null;
+      videoUpload.value = '';
+      preview.pause();
+      preview.src = '';
+      previewWrap.style.display = 'none';
+      detectedWrap.style.display = 'none';
+      analyzeStatus.style.display = 'none';
+      transformStatus.textContent = '';
+      resultCard.style.display = 'none';
+      seoBox.style.display = 'none';
+    });
 
+    // Transform action: gather replacements, send video + replacements JSON
     transformBtn.addEventListener('click', async ()=>{
-      if(!currentFile) return alert('Téléverse une vidéo d\'abord');
-      const catColor = document.getElementById('catColor').value.trim() || 'orange';
-      const dogColor = document.getElementById('dogColor').value.trim() || 'brown';
-      progress.textContent = 'Upload + préparation du job...';
+      if(!uploadedFile) return alert('Upload une vidéo d\'abord.');
+      transformStatus.textContent = '⏳ Upload & préparation du job...';
+      // Read all replacement inputs
+      const items = detectedList.querySelectorAll('.det-item');
+      const replacements = {};
+      items.forEach((it)=>{
+        const repl = it.querySelector('input.text');
+        const color = it.querySelector('input.color');
+        const original = repl.dataset.label || repl.placeholder || 'animal';
+        const replVal = repl.value.trim();
+        const colorVal = color.value.trim();
+        if(replVal) replacements[original] = { replace_with: replVal, color: colorVal || null };
+      });
+      // If replacements empty, warn
+      if(Object.keys(replacements).length === 0){
+        if(!confirm("Tu n'as renseigné aucun remplacement. Continuer et garder les animaux ?")) return;
+      }
+      // build form
       try {
         const fd = new FormData();
-        fd.append('video', currentFile, currentFile.name);
-        fd.append('action', 'transform'); // indique qu'on lance une transformation complète
-        fd.append('catColor', catColor);
-        fd.append('dogColor', dogColor);
-        // envoi
+        fd.append('video', uploadedFile, uploadedFile.name);
+        fd.append('action', 'transform');
+        fd.append('replacements', JSON.stringify(replacements));
+        // send
         const r = await fetch(N8N_WEBHOOK, { method: 'POST', body: fd });
+        if(!r.ok) throw new Error('Envoi transform a échoué');
         const j = await r.json();
+        // Expect { status: 'processing', job_id } or { status:'done', download_url, seo }
         if(j.status === 'processing' && j.job_id){
-          progress.textContent = 'Job lancé (id: ' + j.job_id + ') — attente...';
+          transformStatus.textContent = 'Job lancé (id: ' + j.job_id + '). Traitement en cours...';
           pollJob(j.job_id);
         } else if(j.status === 'done' && j.download_url){
+          transformStatus.textContent = '✅ Transformation terminée';
           showResult(j);
         } else {
-          progress.textContent = 'Réponse inattendue du serveur';
-          console.log(j);
+          transformStatus.textContent = 'Réponse inattendue du serveur';
+          console.log('server response', j);
         }
-      } catch (err){
+      } catch(err){
         console.error(err);
-        progress.textContent = 'Erreur lors du lancement';
+        transformStatus.textContent = '⚠️ Erreur lors du lancement de la transformation.';
       }
     });
 
+    // Poll job status
     async function pollJob(jobId){
-      const max = 90; // ~6 minutes
+      const max = 120; // attempts
+      const delay = 4000;
       for(let i=0;i<max;i++){
-        await new Promise(r=>setTimeout(r,4000));
+        await new Promise(r=>setTimeout(r,delay));
         try {
-          const r = await fetch(N8N_WEBHOOK + '?action=status&job_id=' + encodeURIComponent(jobId));
-          if(!r.ok) continue;
-          const j = await r.json();
-          if(j.status === 'done' && j.download_url){
-            showResult(j);
+          const resp = await fetch(N8N_WEBHOOK + '?action=status&job_id=' + encodeURIComponent(jobId));
+          if(!resp.ok) continue;
+          const json = await resp.json();
+          if(json.status === 'done' && json.download_url){
+            transformStatus.textContent = '✅ Traitement terminé';
+            showResult(json);
             return;
           } else {
-            progress.textContent = 'Progress: ' + (j.progress || 'processing...');
+            transformStatus.textContent = 'Progress: ' + (json.progress || 'processing...');
           }
         } catch(e){
-          // ignore
+          // ignore, keep polling
         }
       }
-      progress.textContent = 'Temps dépassé — réessaie plus tard';
+      transformStatus.textContent = '⏱️ Délai dépassé — réessaie plus tard.';
     }
 
-    function showResult(j){
-      progress.textContent = 'Terminé ✅';
-      resultArea.style.display = 'block';
-      resultVideo.src = j.download_url;
-      downloadLink.href = j.download_url;
-      downloadLink.setAttribute('download','transformed_'+(currentFile ? currentFile.name : 'video.mp4'));
-      if(j.seo){
-        seoOut.style.display = 'block';
-        seoTitle.textContent = j.seo.title || '';
-        seoDesc.textContent = j.seo.description || '';
-        seoTags.textContent = (j.seo.hashtags || []).join(' ');
-        seoChaps.innerText = (j.seo.chapters || []).map(c => `${c.time} ${c.label}`).join('  |  ');
+    // Display final result + SEO
+    function showResult(json){
+      resultCard.style.display = 'block';
+      resultVideo.src = json.download_url;
+      downloadLink.href = json.download_url;
+      if(json.seo){
+        seoBox.style.display = 'block';
+        seoTitle.textContent = json.seo.title || '';
+        seoDesc.textContent = json.seo.description || '';
+        seoTags.textContent = (json.seo.hashtags || []).join(' ');
+        seoChaps.innerText = (json.seo.chapters || []).map(c => `${c.time} ${c.label}`).join('  |  ');
+      } else {
+        seoBox.style.display = 'none';
       }
     }
-  </script>
-</body>
-</html>
+
+    // Safety: quick check that webhook chan
+
