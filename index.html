@@ -245,7 +245,7 @@
         fd.append('action', 'transform');
         fd.append('replacements', JSON.stringify(replacements));
         // send
-        const r = await fetch(N8N_WEBHOOK, { method: 'POST', body: fd });
+        const r = await fetch(http://localhost:5678/webhook/video-transform, { method: 'POST', body: fd });
         if(!r.ok) throw new Error('Envoi transform a échoué');
         const j = await r.json();
         // Expect { status: 'processing', job_id } or { status:'done', download_url, seo }
