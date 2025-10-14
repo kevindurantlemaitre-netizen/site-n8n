@@ -97,13 +97,13 @@
       </div>
     </div>
 
-    <footer>© Transform • Tokyo Revengers UI — Assure-toi que ton n8n supporte les actions "analyze", "transform" et "status"</footer>
+    <footer>© Transform • Tokyo Revengers UI — Bibity be </footer>
   </div>
 
   <script>
     // ---------------------------
     // CONFIG : remplace par ton webhook n8n
-    const N8N_WEBHOOK = "https://TON-N8N-INSTANCE/webhook/video-transform"; // <-- remplace ici
+    const N8N_WEBHOOK = "http://localhost:5678/webhook/video-transform"; // <-- remplace ici
     // ---------------------------
 
     const videoUpload = document.getElementById('videoUpload');
@@ -272,7 +272,7 @@
       for(let i=0;i<max;i++){
         await new Promise(r=>setTimeout(r,delay));
         try {
-          const resp = await fetch(N8N_WEBHOOK + '?action=status&job_id=' + encodeURIComponent(jobId));
+          const resp = await fetch(http://localhost:5678/webhook/video-transform + '?action=status&job_id=' + encodeURIComponent(jobId));
           if(!resp.ok) continue;
           const json = await resp.json();
           if(json.status === 'done' && json.download_url){
