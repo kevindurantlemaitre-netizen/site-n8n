@@ -1,372 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AI Video Transformer</title>
-  <meta name="description" content="Uploadez une vidéo, notre IA détecte les animaux et vous permet de les transformer." />
-  <style>
-    /* --- FONTS & RESET --- */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    :root {
-      --bg: #111319;
-      --card-bg: #1A1D25;
-      --border-color: rgba(255, 255, 255, 0.07);
-      --accent: #3b82f6;
-      --text-primary: #f8f9fa;
-      --text-secondary: #adb5bd;
-      --radius: 12px;
-      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      color: var(--text-primary);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.6;
-    }
-
-    /* --- LAYOUT & MAIN ELEMENTS --- */
-    .container {
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    h1 {
-      font-size: 2.25rem;
-      font-weight: 700;
-      letter-spacing: -1px;
-    }
-    h1 .highlight {
-      color: var(--accent);
-    }
-    header p {
-      color: var(--text-secondary);
-      max-width: 500px;
-      margin: 10px auto 0;
-    }
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 350px;
-      gap: 24px;
-      align-items: start;
-    }
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-    h3 {
-      font-size: 1.25rem;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 12px;
-    }
-
-    /* --- FORM ELEMENTS --- */
-    label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px dashed var(--border-color);
-      background-color: rgba(0,0,0,0.2);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    input[type="file"]:hover {
-      background-color: rgba(0,0,0,0.3);
-    }
-    input.text-input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg);
-      color: var(--text-primary);
-      font-size: 0.9rem;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background-color: var(--accent);
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.1s, opacity 0.2s;
-    }
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-
-    /* --- DYNAMIC CONTENT --- */
-    video {
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 16px;
-      border: 1px solid var(--border-color);
-    }
-    .status-message {
-      margin-top: 16px;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    .detection-list {
-      margin-top: 20px;
-      display: grid;
-      gap: 12px;
-    }
-    .detected-item {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items: center;
-      padding: 12px;
-      border-radius: 8px;
-      background-color: rgba(0,0,0,0.2);
-    }
-    .seo-box {
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: rgba(0,0,0,0.2);
-    }
-    .seo-title {
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .seo-hashtags {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      word-wrap: break-word;
-      color: var(--text-secondary);
-    }
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Test de Connexion n8n</title>
+    <style>
+        body { font-family: sans-serif; background: #222; color: white; text-align: center; padding-top: 50px; }
+        h1 { color: #00ff99; }
+        button { font-size: 20px; padding: 15px 30px; cursor: pointer; }
+        #log { margin-top: 30px; background: #333; padding: 20px; text-align: left; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>AI Video <span class="highlight">Transformer</span></h1>
-      <p>Donnez une nouvelle vie à vos vidéos. Uploadez un fichier, notre IA analyse son contenu et vous permet de transformer les animaux détectés en quelques clics.</p>
-    </header>
 
-    <div class="main-grid">
-      <div class="card">
-        <h3>1. Uploadez votre vidéo</h3>
-        <input id="videoUpload" type="file" accept="video/mp4,video/*" />
-        
-        <div id="previewWrap" style="display:none;">
-          <video id="preview" controls></video>
-        </div>
+    <h1>Fichier de Test Ultime v3</h1>
+    <p>Ce test va essayer de contacter ton n8n sur Hugging Face.</p>
+    
+    <input type="file" id="testFile">
+    <button id="testButton">Lancer le Test</button>
 
-        <div id="analyzeStatus" class="status-message" style="display:none;"></div>
+    <div id="log">Logs du test :</div>
 
-        <div id="detectedWrap" style="display:none; margin-top: 24px;">
-          <h3>2. Animaux détectés</h3>
-          <p class="status-message" style="text-align: left; margin-bottom: 12px;">Choisissez comment transformer chaque animal. Laissez vide pour ne rien changer.</p>
-          <div id="detectedList" class="detection-list"></div>
-          <button id="transformBtn" style="margin-top: 20px;">🚀 Lancer la Transformation</button>
-          <div id="transformStatus" class="status-message"></div>
-        </div>
-      </div>
+    <script>
+        const testButton = document.getElementById('testButton');
+        const testFile = document.getElementById('testFile');
+        const logDiv = document.getElementById('log');
 
-      <div class="card">
-        <h3>Résultats</h3>
-        <div id="resultCard" style="display:none;">
-          <video id="resultVideo" controls></video>
-          <a id="downloadLink" href="#" download style="display: block; text-align: center; margin-top: 12px; color: var(--accent);">Télécharger la vidéo</a>
-          
-          <div id="seoBox" class="seo-box">
-            <h4 class="seo-title" id="seoTitle"></h4>
-            <p id="seoDesc" style="margin-top: 8px; font-size: 0.9rem;"></p>
-            <p class="seo-hashtags" id="seoTags"></p>
-          </div>
-        </div>
-        <p id="waitingNote" class="status-message">Les résultats de la transformation apparaîtront ici...</p>
-      </div>
-    </div>
-
-    <footer>
-      Projet de transformation vidéo par IA &copy; 2025
-    </footer>
-  </div>
-
-  <script>
-    // --- CONFIGURATION ---
-    const N8N_WEBHOOK = "kevin2343-mon-n8n-transformer.hf.space";
-
-    // --- DOM ELEMENTS ---
-    const videoUpload = document.getElementById('videoUpload');
-    const previewWrap = document.getElementById('previewWrap');
-    const preview = document.getElementById('preview');
-    const analyzeStatus = document.getElementById('analyzeStatus');
-    const detectedWrap = document.getElementById('detectedWrap');
-    const detectedList = document.getElementById('detectedList');
-    const transformBtn = document.getElementById('transformBtn');
-    const transformStatus = document.getElementById('transformStatus');
-    const resultCard = document.getElementById('resultCard');
-    const resultVideo = document.getElementById('resultVideo');
-    const downloadLink = document.getElementById('downloadLink');
-    const seoBox = document.getElementById('seoBox');
-    const seoTitle = document.getElementById('seoTitle');
-    const seoDesc = document.getElementById('seoDesc');
-    const seoTags = document.getElementById('seoTags');
-    const waitingNote = document.getElementById('waitingNote');
-    let uploadedFile = null;
-
-    // --- FUNCTIONS ---
-    function createDetectedItem(label, confidence) {
-      const itemHTML = `
-        <div class="detected-item">
-          <div>
-            <label>${label}</label>
-            <span style="font-size: 0.8rem; color: var(--text-secondary);">Confiance: ${(confidence * 100).toFixed(0)}%</span>
-          </div>
-          <div>
-            <input class="text-input replacement-input" data-original-label="${label}" placeholder="Remplacer par...">
-            <input class="text-input color-input" style="margin-top: 8px;" placeholder="Couleur (ex: orange)">
-          </div>
-        </div>
-      `;
-      return itemHTML;
-    }
-
-    async function handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      uploadedFile = file;
-      preview.src = URL.createObjectURL(file);
-      previewWrap.style.display = 'block';
-      analyzeStatus.style.display = 'block';
-      analyzeStatus.textContent = '🔍 Analyse en cours...';
-      detectedWrap.style.display = 'none';
-      resultCard.style.display = 'none';
-      waitingNote.style.display = 'block';
-
-      try {
-        const formData = new FormData();
-        formData.append('video', file, file.name);
-
-        const response = await fetch(`${N8N_WEBHOOK}?action=analyze`, { method: 'POST', body: formData });
-        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-        
-        const data = await response.json();
-        const detected = data.detected || [];
-        
-        analyzeStatus.textContent = `✅ Analyse terminée. ${detected.length} animal(aux) détecté(s).`;
-        
-        detectedList.innerHTML = '';
-        if (detected.length > 0) {
-          detected.forEach(d => {
-            detectedList.innerHTML += createDetectedItem(d.label, d.confidence);
-          });
-        } else {
-            detectedList.innerHTML = '<p class="status-message">Aucun animal détecté, vous pouvez proposer des remplacements manuels.</p>';
-            detectedList.innerHTML += createDetectedItem('animal1', 0);
+        function log(message) {
+            console.log(message);
+            logDiv.innerHTML += `<p>> ${message}</p>`;
         }
-        detectedWrap.style.display = 'block';
-      } catch (error) {
-        console.error("Erreur lors de l'analyse:", error);
-        analyzeStatus.textContent = '⚠️ L\'analyse a échoué. Vérifiez la console et votre webhook n8n.';
-      }
-    }
 
-    async function handleTransform() {
-      if (!uploadedFile) {
-        alert("Veuillez d'abord uploader une vidéo.");
-        return;
-      }
+        testButton.addEventListener('click', async () => {
+            const webhookUrl = "https://kevin2343-mon-n8n-transformer.hf.space/webhook/video-transform?action=analyze";
+            const file = testFile.files[0];
 
-      transformStatus.textContent = '🚀 Lancement de la transformation...';
-      
-      const replacements = {};
-      document.querySelectorAll('.replacement-input').forEach(input => {
-        const originalLabel = input.dataset.originalLabel;
-        const replacementValue = input.value.trim();
-        const colorValue = input.nextElementSibling.value.trim();
-        if (replacementValue) {
-          replacements[originalLabel] = { replace_with: replacementValue, color: colorValue || null };
-        }
-      });
+            if (!file) {
+                log("ERREUR : Veuillez d'abord sélectionner un fichier.");
+                return;
+            }
 
-      try {
-        const formData = new FormData();
-        formData.append('video', uploadedFile, uploadedFile.name);
-        formData.append('replacements', JSON.stringify(replacements));
-        
-        const response = await fetch(N8N_WEBHOOK, { method: 'POST', body: formData });
-        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+            log("Bouton cliqué. Préparation de l'envoi...");
+            log(`URL de destination : ${webhookUrl}`);
 
-        const data = await response.json();
-        
-        // Pour un workflow asynchrone, on gérerait le polling ici.
-        // Pour un workflow simple, on affiche directement le résultat.
-        if (data.status === 'done' && data.download_url) {
-            showResult(data);
-        } else {
-             // Simule un résultat pour la démo si le workflow ne renvoie pas de réponse directe
-            transformStatus.textContent = '✅ Transformation terminée !';
-            showResult({
-                download_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                seo: {
-                    title: 'Titre SEO généré par l\'IA',
-                    description: 'Ceci est une description générée automatiquement pour votre vidéo transformée.',
-                    hashtags: '#IA #Video #Transformation'
+            try {
+                const formData = new FormData();
+                formData.append('video', file, file.name);
+                
+                log("Envoi de la requête en cours... (fetch)");
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                log(`Réponse reçue du serveur ! Statut : ${response.status}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log("SUCCÈS ! Données reçues :");
+                    log(JSON.stringify(data));
+                } else {
+                    log(`ERREUR : Le serveur a répondu avec un statut ${response.status}.`);
                 }
-            });
-        }
 
-      } catch (error) {
-        console.error('Erreur lors de la transformation:', error);
-        transformStatus.textContent = '⚠️ La transformation a échoué.';
-      }
-    }
-
-    function showResult(data) {
-        waitingNote.style.display = 'none';
-        resultCard.style.display = 'block';
-        resultVideo.src = data.download_url;
-        downloadLink.href = data.download_url;
-        if(data.seo) {
-            seoBox.style.display = 'block';
-            seoTitle.textContent = data.seo.title || '';
-            seoDesc.textContent = data.seo.description || '';
-            seoTags.textContent = Array.isArray(data.seo.hashtags) ? data.seo.hashtags.join(' ') : data.seo.hashtags;
-        } else {
-            seoBox.style.display = 'none';
-        }
-    }
-
-    // --- EVENT LISTENERS ---
-    videoUpload.addEventListener('change', handleFileUpload);
-    transformBtn.addEventListener('click', handleTransform);
-  </script>
+            } catch (error) {
+                log("ERREUR CRITIQUE : Impossible d'envoyer la requête (Failed to fetch).");
+                log(`Détail de l'erreur : ${error}`);
+            }
+        });
+    </script>
 </body>
 </html>
